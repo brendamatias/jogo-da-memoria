@@ -7,6 +7,7 @@ import squirtle from "@/assets/images/squirtle.png";
 import pokeball from "@/assets/images/pokeball.png";
 
 import { cn } from "@/lib";
+import { memo } from "react";
 
 export const originalItems = [
   "bulbasaur",
@@ -19,7 +20,7 @@ export const originalItems = [
 
 type PokemonName = (typeof originalItems)[number];
 
-const images: Record<PokemonName, string> = {
+const pokemonImages: Record<PokemonName, string> = {
   bulbasaur,
   charmander,
   cyndaquil,
@@ -39,21 +40,24 @@ interface CardButtonProps {
   card: Card;
   onFlip: () => void;
 }
-export const CardButton = ({ card, onFlip }: CardButtonProps) => {
+
+export const CardButton = memo(({ card, onFlip }: CardButtonProps) => {
   const isVisible = card.isFlipped || card.isMatched;
+  const imageSrc = isVisible ? pokemonImages[card.content] : pokeball;
+
+  const baseClass =
+    "h-32 w-full rounded-2xl overflow-hidden flex items-center justify-center transition-all duration-300";
+  const visibleClass = "bg-white";
+  const hiddenClass = "bg-[#FF4C41]";
 
   return (
     <button
       onClick={onFlip}
-      className={cn(
-        "h-32 w-full rounded-2xl overflow-hidden flex items-center justify-center transition-all duration-300",
-        isVisible ? "bg-white" : "bg-[#FF4C41]"
-      )}
+      className={cn(baseClass, isVisible ? visibleClass : hiddenClass)}
+      aria-label={isVisible ? `Carta de ${card.content}` : "Carta oculta"}
+      disabled={card.isMatched}
     >
-      <img
-        src={isVisible ? images[card.content] : pokeball}
-        alt={isVisible ? card.content : "Pokeball"}
-      />
+      <img src={imageSrc} alt={isVisible ? card.content : "Pokeball"} />
     </button>
   );
-};
+});
