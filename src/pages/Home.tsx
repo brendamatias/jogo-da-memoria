@@ -1,90 +1,24 @@
-import {
-  ProgressBar,
-  type Card,
-  CardButton,
-  originalItems,
-} from "@/components";
-import { useEffect, useMemo, useState } from "react";
-
-const MAX_ATTEMPTS = 15;
-
-function shuffle(array: Card["content"][]): Card[] {
-  return array
-    .concat(array)
-    .map((content, i) => ({
-      id: i,
-      content,
-      isFlipped: false,
-      isMatched: false,
-    }))
-    .sort(() => Math.random() - 0.5);
-}
+import { ProgressBar, CardButton, Button } from "@/components";
+import { useMemoryGame } from "@/hooks/useMemoryGame";
 
 export const Home = () => {
-  const [cards, setCards] = useState<Card[]>([]);
-  const [selected, setSelected] = useState<Card[]>([]);
-  const [attempts, setAttempts] = useState(0);
-
-  const percentage = useMemo(() => (attempts / MAX_ATTEMPTS) * 100, [attempts]);
-
-  const handleFlip = (card: Card) => {
-    if (card.isFlipped || card.isMatched || selected.length === 2) return;
-
-    const updated = cards.map((c) =>
-      c.id === card.id ? { ...c, isFlipped: true } : c
-    );
-
-    setCards(updated);
-
-    const newSelected = [...selected, { ...card, isFlipped: true }];
-    setSelected(newSelected);
-
-    if (newSelected.length === 2) {
-      setAttempts((a) => a + 1);
-
-      const [first, second] = newSelected;
-
-      if (first.content === second.content) {
-        setTimeout(() => {
-          setCards((prev) =>
-            prev.map((c) =>
-              c.content === first.content ? { ...c, isMatched: true } : c
-            )
-          );
-
-          setSelected([]);
-        }, 500);
-      } else {
-        setTimeout(() => {
-          setCards((prev) =>
-            prev.map((c) =>
-              c.id === first.id || c.id === second.id
-                ? { ...c, isFlipped: false }
-                : c
-            )
-          );
-          setSelected([]);
-        }, 800);
-      }
-    }
-  };
-
-  const startNewGame = () => {
-    setCards(shuffle([...originalItems]));
-    setSelected([]);
-    setAttempts(0);
-  };
-
-  useEffect(() => {
-    startNewGame();
-  }, []);
+  const {
+    cards,
+    attempts,
+    percentage,
+    maxAttempts,
+    gameOver,
+    allMatched,
+    handleFlip,
+    startNewGame,
+  } = useMemoryGame();
 
   return (
     <div>
       <div className="space-y-5 text-center mb-[30px] font-normal">
         <h1 className="text-4xl">Jogo da Memória</h1>
         <p className="text-lg text-[#919394] max-w-[398px] mx-auto">
-          Você tem {MAX_ATTEMPTS} tentativas para encontrar todos os pokemons
+          Você tem {maxAttempts} tentativas para encontrar todos os pokemons
         </p>
       </div>
 
@@ -92,13 +26,13 @@ export const Home = () => {
         <div className="flex justify-between gap-4 items-end font-extrabold mb-1.5">
           <strong className="text-sm">Tentativas</strong>
           <h3 className="text-[26px]">
-            {attempts}/{MAX_ATTEMPTS}
+            {attempts}/{maxAttempts}
           </h3>
         </div>
 
         <ProgressBar value={percentage} className="mb-8" />
 
-        <div className="grid md:grid-cols-4 sm:grid-cols-3 grid-cols-2 sm:gap-6 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
           {cards.map((card) => (
             <CardButton
               key={card.id}
@@ -106,6 +40,22 @@ export const Home = () => {
               onFlip={() => handleFlip(card)}
             />
           ))}
+        </div>
+
+        {allMatched && (
+          <p className="text-green-600 text-center mt-6 font-medium text-lg">
+            🎉 Parabéns! Você venceu!
+          </p>
+        )}
+
+        {gameOver && !allMatched && (
+          <p className="text-red-600 text-center mt-6 font-medium text-lg">
+            ❌ Fim de jogo! Tente novamente.
+          </p>
+        )}
+
+        <div className="text-center mt-8">
+          <Button onClick={startNewGame}>Reiniciar Jogo</Button>
         </div>
       </div>
     </div>
