@@ -42,9 +42,7 @@
 }
 
 :root {
-  /* --font-sans: 'inter', 'inter Fallback', 'system-ui' */
-
-  --font-sans: "Geist", sans-serif;
+  --font-sans: "Nunito", sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
