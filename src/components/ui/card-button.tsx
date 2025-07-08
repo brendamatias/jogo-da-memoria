@@ -34,6 +34,7 @@ export type Card = {
   content: PokemonName;
   isFlipped: boolean;
   isMatched: boolean;
+  animationIndex: number;
 };
 
 interface CardButtonProps {
@@ -46,7 +47,7 @@ export const CardButton = memo(({ card, onFlip }: CardButtonProps) => {
   const imageSrc = isVisible ? pokemonImages[card.content] : pokeball;
 
   const baseClass =
-    "h-32 w-full rounded-2xl overflow-hidden flex items-center justify-center transition-all duration-300";
+    "h-32 w-full rounded-2xl overflow-hidden flex items-center justify-center transition-all duration-300 scale-90 opacity-0 animate-[fadeIn_0.3s_ease-in_forwards]";
   const visibleClass = "bg-white";
   const hiddenClass = "bg-[#FF4C41]";
 
@@ -56,6 +57,9 @@ export const CardButton = memo(({ card, onFlip }: CardButtonProps) => {
       className={cn(baseClass, isVisible ? visibleClass : hiddenClass)}
       aria-label={isVisible ? `Carta de ${card.content}` : "Carta oculta"}
       disabled={card.isMatched}
+      style={{
+        animationDelay: `${card.animationIndex * 50}ms`,
+      }}
     >
       <img src={imageSrc} alt={isVisible ? card.content : "Pokeball"} />
     </button>

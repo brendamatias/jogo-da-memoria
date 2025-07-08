@@ -1,11 +1,13 @@
-import { useState, useEffect, useMemo, useCallback } from "react";
+import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { originalItems, type Card } from "@/components";
+import { useSound } from ".";
 
-const MAX_ATTEMPTS = 15;
+const MAX_ATTEMPTS = 4;
 
 const shuffle = (contentArray: Card["content"][]): Card[] => {
   const duplicated = [...contentArray, ...contentArray];
-  return duplicated
+
+  const shuffled = duplicated
     .map((content, i) => ({
       id: i,
       content,
@@ -13,6 +15,11 @@ const shuffle = (contentArray: Card["content"][]): Card[] => {
       isMatched: false,
     }))
     .sort(() => Math.random() - 0.5);
+
+  return shuffled.map((card, index) => ({
+    ...card,
+    animationIndex: index,
+  }));
 };
 
 export function useMemoryGame() {
@@ -22,11 +29,21 @@ export function useMemoryGame() {
   const [isBusy, setIsBusy] = useState(false);
 
   const percentage = useMemo(() => (attempts / MAX_ATTEMPTS) * 100, [attempts]);
+  const hasLost = useRef(false);
 
   const allMatched = cards.length > 0 && cards.every((c) => c.isMatched);
   const gameOver = attempts >= MAX_ATTEMPTS && !allMatched;
 
+  const flipSound = useSound("/sounds/flip.mp3");
+  const matchSound = useSound("/sounds/match.mp3");
+  const incorrectSound = useSound("/sounds/incorrect.mp3");
+  const loseSound = useSound("/sounds/lose.mp3");
+  const winSound = useSound("/sounds/win.mp3");
+  const resetSound = useSound("/sounds/reset.mp3");
+
   const startNewGame = useCallback(() => {
+    hasLost.current = false;
+    resetSound();
     setCards(shuffle([...originalItems]));
     setSelected([]);
     setAttempts(0);
@@ -37,6 +54,8 @@ export function useMemoryGame() {
     (card: Card) => {
       if (card.isFlipped || card.isMatched || selected.length === 2 || isBusy)
         return;
+
+      flipSound();
 
       const updated = cards.map((c) =>
         c.id === card.id ? { ...c, isFlipped: true } : c
@@ -55,6 +74,7 @@ export function useMemoryGame() {
 
         if (first.content === second.content) {
           setTimeout(() => {
+            matchSound();
             setCards((prev) =>
               prev.map((c) =>
                 c.content === first.content ? { ...c, isMatched: true } : c
@@ -64,7 +84,11 @@ export function useMemoryGame() {
             setIsBusy(false);
           }, 500);
         } else {
+          console.log(attempts);
           setTimeout(() => {
+            if (attempts + 1 < MAX_ATTEMPTS) {
+              incorrectSound();
+            }
             setCards((prev) =>
               prev.map((c) =>
                 c.id === first.id || c.id === second.id
@@ -80,6 +104,17 @@ export function useMemoryGame() {
     },
     [cards, selected, isBusy]
   );
+
+  useEffect(() => {
+    if (allMatched) {
+      winSound();
+    }
+
+    if (!allMatched && attempts >= MAX_ATTEMPTS && !hasLost.current) {
+      loseSound();
+      hasLost.current = true;
+    }
+  }, [allMatched, attempts, winSound, loseSound]);
 
   useEffect(() => {
     startNewGame();

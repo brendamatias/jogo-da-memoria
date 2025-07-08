@@ -13,6 +13,8 @@ export const Home = () => {
     startNewGame,
   } = useMemoryGame();
 
+  const disabled = gameOver || allMatched;
+
   return (
     <div>
       <div className="space-y-5 text-center mb-[30px] font-normal">
@@ -37,15 +39,23 @@ export const Home = () => {
             <CardButton
               key={card.id}
               card={card}
-              onFlip={() => handleFlip(card)}
+              onFlip={() => !disabled && handleFlip(card)}
             />
           ))}
         </div>
 
         {allMatched && (
-          <p className="text-green-600 text-center mt-6 font-medium text-lg">
-            🎉 Parabéns! Você venceu!
-          </p>
+          <div className="bg-green-100 p-6 rounded-xl mt-6 text-center">
+            <h2 className="text-2xl font-bold text-green-700">
+              🎉 Você venceu!
+            </h2>
+            <p className="text-green-600">
+              Todos os pokémons foram encontrados!
+            </p>
+            <Button onClick={startNewGame} className="mt-4">
+              Jogar novamente
+            </Button>
+          </div>
         )}
 
         {gameOver && !allMatched && (
