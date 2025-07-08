@@ -1,17 +1,19 @@
-# 📌 PokéMemo
+<h1 align="center">🕹️ PokéMemo</h1>
+<p align="center">Um jogo da memória divertido com temática Pokémon.</p>
 
-Um jogo da memória divertido com temática Pokémon.
+<p align="center">
+  🔗 <a href="https://pokememo.codaki.com.br/" target="_blank"><strong>Visualizar projeto</strong></a>
+</p>
 
 ---
 
-## 📚 Sumário
-
-- [🚀 Tecnologias utilizadas](#-tecnologias-utilizadas)
-- [📸 Demonstração](#-demonstração)
-- [🧰 Instalação](#-instalação)
-- [🙋‍♀️ Como contribuir](#-como-contribuir)
-- [📄 Licença](#-licença)
-- [✨ Autor](#-autor)
+<p align="center">
+  <a href="#-tecnologias-utilizadas">Tecnologias</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-demonstração">Demonstração</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-instalação">Instalação</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-licença">Licença</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-autor">Autor</a>
+</p>
 
 ---
 
