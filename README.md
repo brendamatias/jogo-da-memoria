@@ -1,4 +1,4 @@
-# 📌 Jogo da Memória
+# 📌 PokéMemo
 
 Um jogo da memória divertido com temática Pokémon.
 
@@ -33,10 +33,10 @@ Um jogo da memória divertido com temática Pokémon.
 
 ```bash
 # Clone o repositório
-git clone https://github.com/brendamatias/jogo-da-memoria.git
+git clone https://github.com/brendamatias/pokememo.git
 
 # Acesse a pasta do projeto
-cd jogo-da-memoria
+cd pokememo
 
 # Instale as dependências
 npm install
