@@ -47,7 +47,7 @@ export const CardButton = memo(({ card, onFlip }: CardButtonProps) => {
   const imageSrc = isVisible ? pokemonImages[card.content] : pokeball;
 
   const baseClass =
-    "h-32 w-full rounded-2xl overflow-hidden flex items-center justify-center transition-all duration-300 scale-90 opacity-0 animate-[fadeIn_0.3s_ease-in_forwards]";
+    "sm:h-32 h-24 w-full rounded-2xl overflow-hidden flex items-center justify-center transition-all duration-300 scale-90 opacity-0 animate-[fadeIn_0.3s_ease-in_forwards]";
   const visibleClass = "bg-white";
   const hiddenClass = "bg-[#FF4C41]";
 
@@ -61,7 +61,11 @@ export const CardButton = memo(({ card, onFlip }: CardButtonProps) => {
         animationDelay: `${card.animationIndex * 50}ms`,
       }}
     >
-      <img src={imageSrc} alt={isVisible ? card.content : "Pokeball"} />
+      <img
+        className="sm:w-auto w-16"
+        src={imageSrc}
+        alt={isVisible ? card.content : "Pokeball"}
+      />
     </button>
   );
 });
