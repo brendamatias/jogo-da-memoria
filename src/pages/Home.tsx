@@ -1,4 +1,9 @@
-import { ProgressBar, CardButton, Button } from "@/components";
+import {
+  ProgressBar,
+  CardButton,
+  DialogEndGame,
+  DialogSuccess,
+} from "@/components";
 import { useMemoryGame } from "@/hooks/useMemoryGame";
 
 export const Home = () => {
@@ -24,50 +29,37 @@ export const Home = () => {
         </p>
       </div>
 
-      <div>
-        <div className="flex justify-between gap-4 items-end font-extrabold mb-1.5">
-          <strong className="text-sm">Tentativas</strong>
-          <h3 className="text-[26px]">
-            {attempts}/{maxAttempts}
-          </h3>
-        </div>
-
-        <ProgressBar value={percentage} className="mb-8" />
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
-          {cards.map((card) => (
-            <CardButton
-              key={card.id}
-              card={card}
-              onFlip={() => !disabled && handleFlip(card)}
-            />
-          ))}
-        </div>
-
-        {allMatched && (
-          <div className="bg-green-100 p-6 rounded-xl mt-6 text-center">
-            <h2 className="text-2xl font-bold text-green-700">
-              🎉 Você venceu!
-            </h2>
-            <p className="text-green-600">
-              Todos os pokémons foram encontrados!
-            </p>
-            <Button onClick={startNewGame} className="mt-4">
-              Jogar novamente
-            </Button>
-          </div>
-        )}
-
-        {gameOver && !allMatched && (
-          <p className="text-red-600 text-center mt-6 font-medium text-lg">
-            ❌ Fim de jogo! Tente novamente.
-          </p>
-        )}
-
-        <div className="text-center mt-8">
-          <Button onClick={startNewGame}>Reiniciar Jogo</Button>
-        </div>
+      <div className="flex justify-between gap-4 items-end font-extrabold mb-1.5">
+        <strong className="text-sm">Tentativas</strong>
+        <h3 className="text-[26px]">
+          {attempts}/{maxAttempts}
+        </h3>
       </div>
+
+      <ProgressBar value={percentage} className="mb-8" />
+
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:gap-6">
+        {cards.map((card) => (
+          <CardButton
+            key={card.id}
+            card={card}
+            onFlip={() => !disabled && handleFlip(card)}
+          />
+        ))}
+      </div>
+
+      <DialogSuccess
+        open={allMatched}
+        attempts={attempts}
+        maxAttempts={maxAttempts}
+        startNewGame={startNewGame}
+      />
+
+      <DialogEndGame
+        open={gameOver}
+        maxAttempts={maxAttempts}
+        startNewGame={startNewGame}
+      />
     </div>
   );
 };

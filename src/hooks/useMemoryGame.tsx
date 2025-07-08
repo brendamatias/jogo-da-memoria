@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { originalItems, type Card } from "@/components";
 import { useSound } from ".";
 
-const MAX_ATTEMPTS = 4;
+const MAX_ATTEMPTS = 15;
 
 const shuffle = (contentArray: Card["content"][]): Card[] => {
   const duplicated = [...contentArray, ...contentArray];
@@ -73,8 +73,8 @@ export function useMemoryGame() {
         const [first, second] = newSelected;
 
         if (first.content === second.content) {
+          matchSound();
           setTimeout(() => {
-            matchSound();
             setCards((prev) =>
               prev.map((c) =>
                 c.content === first.content ? { ...c, isMatched: true } : c
@@ -82,9 +82,8 @@ export function useMemoryGame() {
             );
             setSelected([]);
             setIsBusy(false);
-          }, 500);
+          }, 300);
         } else {
-          console.log(attempts);
           setTimeout(() => {
             if (attempts + 1 < MAX_ATTEMPTS) {
               incorrectSound();
@@ -107,9 +106,10 @@ export function useMemoryGame() {
 
   useEffect(() => {
     if (allMatched) {
-      winSound();
+      setTimeout(() => {
+        winSound();
+      }, 300);
     }
-
     if (!allMatched && attempts >= MAX_ATTEMPTS && !hasLost.current) {
       loseSound();
       hasLost.current = true;
