@@ -1,6 +1,6 @@
-# 📌 Nome do Projeto
+# 📌 Jogo da Memória
 
-Um app de tarefas simples para organizar o dia a dia, feito com React e TypeScript.
+Um jogo da memória divertido com temática Pokémon.
 
 ---
 
@@ -33,10 +33,10 @@ Um app de tarefas simples para organizar o dia a dia, feito com React e TypeScri
 
 ```bash
 # Clone o repositório
-git clone https://github.com/brendamatias/seu-projeto.git
+git clone https://github.com/brendamatias/jogo-da-memoria.git
 
 # Acesse a pasta do projeto
-cd seu-projeto
+cd jogo-da-memoria
 
 # Instale as dependências
 npm install
