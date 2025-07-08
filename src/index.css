@@ -39,10 +39,12 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --font-press-start: var(--font-press-start);
 }
 
 :root {
   --font-sans: "Nunito", sans-serif;
+  --font-press-start: "Press Start 2P", system-ui;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);

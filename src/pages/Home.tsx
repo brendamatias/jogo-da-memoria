@@ -23,7 +23,7 @@ export const Home = () => {
   return (
     <div>
       <div className="space-y-5 text-center mb-[30px] font-normal">
-        <h1 className="text-4xl">Jogo da Memória</h1>
+        <h1 className="text-4xl font-press-start">Jogo da Memória</h1>
         <p className="text-lg text-[#919394] max-w-[398px] mx-auto">
           Você tem {maxAttempts} tentativas para encontrar todos os pokemons
         </p>
